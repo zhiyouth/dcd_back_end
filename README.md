@@ -1,5 +1,7 @@
 # dcd_back_end
 
+github 地址： `https://github.com/zhiyouth/dcd_back_end`
+
 ## run project
 
 - 本地安装 mysql
