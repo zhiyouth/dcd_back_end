@@ -38,10 +38,6 @@ let allServices = {
         console.log(_sql, 'sql');
         return allServices.query(_sql)
     },
-    addUserData: (obj) => {
-         let _sql = "insert into users set name=?,pass=?,avator=?,moment=?;"
-         return allServices.query(_sql, obj)
-     },
 }
 
 module.exports = allServices;
