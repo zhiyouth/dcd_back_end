@@ -1,13 +1,14 @@
 var router = require('koa-router')()
-const userService = require('../controllers/mysqlConfig');
-const formatSqlData = require('../utils/formateSqlData').formateSqlData;
+const DcdSql = require('../utils/DcdSql');
+const dcdSql = new DcdSql();
 router.prefix('/users');
 //获取所有用户(GET请求)
 router.get('/',   async function (ctx, next)  {
-  const result = await userService.findUserData();
-  const resultObj = formatSqlData(result);
-  console.log(resultObj[0].username);
-  this.body = resultObj[0].username;
+  const result = await dcdSql.get({
+    str: 'id,title',
+    chartName: 'edu',
+  })
+  this.body = result;
 })
 
 module.exports = router
