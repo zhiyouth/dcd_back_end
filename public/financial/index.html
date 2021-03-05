@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>财务体检表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="__admin__/css/style.css"  media="all">
+</head>
+<body>
+
+<div class="layui-card" style="box-shadow: none;margin-top: 10px">
+    <div class="layui-form " style="border-bottom: transparent;height: auto" >
+
+        <div class="layui-form-item" style="">
+
+            <div class="layui-input-inline">
+                <input type="text" id="phone" autocomplete="off" name="phone" placeholder="请输入手机号码" class="layui-input">
+            </div>
+
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-list"  lay-submit lay-filter="LAY-app-contlist-search">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"  style="vertical-align: sub;"></i>查询
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<table class="layui-hide" id="financial" lay-filter="financial"></table>
+
+<script type="text/html" id="barAction">
+    <a class="layui-btn layui-btn-xs" lay-event="show">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+<script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+
+
+<script>
+    layui.use(["table", "util","form"], function(){
+        var table = layui.table
+            ,util = layui.util
+            ,form = layui.form
+            ,layer = layui.layer;
+
+
+        var tableIn = table.render({
+            elem: '#financial'
+            ,url:"{:url('financial/index')}"
+            ,title: '财务体检表'
+            ,cellMinWidth: 80
+            ,toolbar:true
+            ,cols: [
+                //一级表头
+                [
+                    { checkbox:true, rowspan: 2 ,},
+                    { title: 'ID', rowspan: 2, align:'center',width: 80, field: 'id'},
+                    { title: '基本信息项', colspan: 7, align:'center'},
+                    { title: '资产项', colspan: 4, align:'center'},
+                    { title: '支出项', colspan: 7, align:'center'},
+                    { title: '负债项', colspan: 4, align:'center'},
+                    { title: '期望目标金额', rowspan: 2, align:'center',field: 'target_amount'},
+                    { title: '提交时间', rowspan: 2, align:'center',field: 'add_time',templet:function (res) {
+                            return util.toDateString(res.add_time = (res.add_time * 1000));
+                        }},
+                    { title: '操作', rowspan: 2, align:'center',toolbar: '#barAction',width: 160},
+                ],
+                //二级表头
+                [
+                    { title: '姓名', field: 'basic_name'},
+                    { title: '出生日期', field: 'basic_birthday',templet:function (res) {
+                            return res.basic_birthday ? util.toDateString(res.basic_birthday * 1000): '暂无';
+                        }},
+                    { title: '学历', field: 'basic_edu'},
+                    { title: '职业', field: 'basic_job'},
+                    { title: '情感状态', field: 'basic_emotion'},
+                    { title: '有无子女', field: 'basic_children'},
+                    { title: '手机号', field: 'basic_phone'},
+
+                    { title: '月收入', field: 'asset_month_income'},
+                    { title: '现存款', field: 'asset_now_deposit'},
+
+                    { title: '投资类产品总额', field: 'asset_invest_total'},
+                    { title: '月家用常规支出', field: 'disburse_month_general'},
+                    { title: '月房租支出', field: 'disburse_month_house'},
+                    { title: '月子女支出', field: 'disburse_month_children'},
+                    { title: '月购物支出', field: 'disburse_month_shop'},
+                    { title: '月娱乐支出', field: 'disburse_month_play'},
+                    { title: '月投资支出', field: 'disburse_month_invest'},
+                    { title: '月其他支出', field: 'disburse_month_other'},
+
+                    { title: '月车贷还款', field: 'month_car_loans'},
+                    { title: '月房贷还款', field: 'month_house_loans'},
+                    { title: '月信用卡还款', field: 'month_card_loans'},
+                    { title: '其他', field: 'month_other'},
+
+                ]
+            ]
+            ,page: true
+            ,done:function (res,page,count) {
+
+            }
+        });
+
+
+        //监听行工具事件
+        table.on('tool(financial)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'del'){
+                layer.confirm('您确定要删除吗？', function(index){
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('financial/del')}",{id:data.id},function(res){
+                        layer.close(loading);
+                        if(res.code===0){
+                            layer.msg(res.msg,{time:1000},function () {
+                                tableIn.reload();
+                            });
+
+                        }else{
+                            layer.msg(res.msg);
+                        }
+                    });
+                    layer.close(index);
+                },function () {
+                    layer.msg('您取消了删除操作！')
+                });
+            }
+            else if(layEvent === 'show'){
+                var indexOpen = layer.open({
+                    type: 2,
+                    title: '查看',
+                    closeBtn: 1, //是否显示关闭按钮
+                    area: ['50%','85%'],
+                    anim: 2,  //动画
+                    shadeClose: false,  //点击空白处是否关闭
+                    maxmin: false, //开启最大化最小化按钮
+                    content: ["{:url('financial/show')}?id="+data.id]
+                });
+            }
+        });
+
+
+        //监听搜索
+        form.on('submit(LAY-app-contlist-search)', function(data){
+
+            table.reload('financial', {
+                url:"{:url('financial/search')}",
+                method:'post',
+                where: {
+                    keyword: data.field
+                },
+                page:{
+                    curr:1
+                }
+                ,response: {
+                    statusName: 'code' //规定数据状态的字段名称，默认：code
+                    ,statusCode: 200 //规定成功的状态码，默认：0
+                    ,msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                    ,countName: 'count' //规定数据总数的字段名称，默认：count
+                    ,dataName: 'data' //规定数据列表的字段名称，默认：data
+                }
+            });
+
+        });
+
+
+    });
+
+</script>
+
+</body>
+</html>

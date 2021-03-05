@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页面</title>
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/iadmin.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/admin.css" />
+    <link href="/static/admin/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+
+
+        .panel_box {
+            margin-bottom: 5px;
+        }
+
+        .panel {
+            text-align: center;
+            height: 90px;
+        }
+        .panel_box a {
+            display: block;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 80px;
+            background-color: #fff !important;
+        }
+
+        .panel_icon {
+            width: 40%;
+            display: inline-block;
+            line-height: 80px;
+            float: left;
+            position: relative;
+            height: 100%;
+        }
+        .panel_word {
+            width: 60%;
+            display: inline-block;
+            float: right;
+            margin: 13px 0 14px;
+        }
+
+        .panel_icon i {
+            font-size: 40px !important;
+            color: #fff;
+            display: inline-block;
+        }
+        .panel_word span {
+            font-size: 25px;
+            display: block;
+            height: 34px;
+        }
+
+        .panel .loginTime {
+            font-size: 18px;
+            color: #1E9FFF;
+            line-height: 30px;
+        }
+
+
+
+        /*系统通知*/
+        .sys_title{
+            color: #090909;
+        }
+
+
+    </style>
+
+</head>
+
+<body style="padding: 20px;" >
+
+<!--顶部统计数据展示-->
+<div class="layui-row layui-col-space10 panel_box">
+    <div class="panel layui-col-xs14 layui-col-sm6 layui-col-md4 layui-col-lg3">
+        <a href="javascript:;" style="border: 1px #2F4056 solid;" >
+            <div class="panel_icon layui-bg-cyan">
+                <h2>今日</h2>
+            </div>
+            <div class="panel_word">
+                <span>{$today}</span>
+                <cite>财务体检</cite>
+            </div>
+        </a>
+    </div>
+
+
+    <div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+        <a href="javascript:;" style="border: 1px #009688 solid;" >
+            <div class="panel_icon layui-bg-green">
+                <h2>昨日</h2>
+            </div>
+            <div class="panel_word">
+                <span>{$yesterday}</span>
+                <cite>财务体检</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel layui-col-xs14 layui-col-sm6 layui-col-md4 layui-col-lg3">
+        <a href="javascript:;" style="border: 1px #FF5722 solid;" >
+            <div class="panel_icon layui-bg-red">
+                <h2>本月</h2>
+            </div>
+            <div class="panel_word">
+                <span>{$month}</span>
+                <cite>财务体检</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel layui-col-xs14 layui-col-sm6 layui-col-md4 layui-col-lg3">
+        <a href="javascript:;" style="border: 1px #1E9FFF solid;">
+            <div class="panel_icon layui-bg-blue">
+                <h2>时间</h2>
+            </div>
+            <div class="panel_word">
+                <span class="loginTime" id="showDate"></span>
+            </div>
+        </a>
+    </div>
+</div>
+<!--顶部统计数据展示结束-->
+
+
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+
+            <div class="layui-card">
+                <div class="layui-card-header">算法简述</div>
+                <div class="layui-card-body">
+
+
+                    <div class="layui-collapse" lay-filter="introduce">
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">01评估月资产流动性模块</h2>
+                            <div class="layui-colla-content">
+                                <p>
+                                    <ul>
+                                        <li>目的：判断当前月资产流动性处于什么阶段</li>
+                                        <li>
+                                            算法：资产流动性=现存款+月收入-月总支出+总投资
+                                        </li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">02评估风险与保障模块</h2>
+                            <div class="layui-colla-content">
+                                <p>
+                                <ul>
+                                    <li>目的：判断客户当前处于什么财务阶段</li>
+                                    <li>
+                                        未达到财务保障阶段：存款金额＜月总支出×6
+                                    </li>
+                                    <li>
+                                        未达到财务安全阶段：月总支出×150＞存款金额≥月总支出×6
+                                    </li>
+                                    <li>
+                                        未达到财务自由阶段：存款金额≥月总支出×150
+                                    </li>
+                                </ul>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">03当前财务状况主要问题模块</h2>
+                            <div class="layui-colla-content">
+                                <p>
+                                <ul>
+                                    <li>目的：判断当财务状况主要问题（6个）</li>
+                                    <li>
+                                        存款、负债、收入、投资、支出、资产增值
+                                    </li>
+                                </ul>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">04评估期望目标金额模块</h2>
+                            <div class="layui-colla-content">
+                                <p>
+                                <ul>
+                                    <li>目的：对客户期望目标金额进行计算及评估</li>
+                                    <li>
+                                        资产流动性为0
+                                    </li>
+                                    <li>
+                                        资产流动性低 【30~90%】
+                                    </li>
+                                    <li>
+                                        资产流动性较低 【20~60%】
+                                    </li>
+                                    <li>
+                                        资产流动性较好 【10~40%】
+                                    </li>
+                                </ul>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!--右侧内容-->
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body layui-text">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col>
+                        </colgroup>
+                        <tbody>
+
+                        <tr>
+                            <td>Web运行环境</td>
+                            <td>
+                                Nginx      </td>
+                        </tr>
+                        <tr>
+                            <td>MySQL版本</td>
+                            <td>
+                               5.7.*
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PHP版本</td>
+                            <td>
+                                7.4.^                            </td>
+                        </tr>
+                        <tr>
+                            <td>系统版本</td>
+                            <td>
+                                 alpha v1.0                          </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+<script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+<script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+
+    $(function(){
+        //当前时间格式化yyyy-MM-dd HH:mm:ss
+        showTime()
+        setInterval("showTime();",1000); //每隔一秒执行一次
+    })
+
+    function showTime() {
+        $("#showDate").html(timeStamp2String(new Date().getTime()))
+    }
+
+    //在Jquery里格式化Date日期时间数据
+    function timeStamp2String(time){
+        var datetime = new Date();
+        datetime.setTime(time);
+        var year = datetime.getFullYear();
+        var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+        var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+        var hour = datetime.getHours()< 10 ? "0" + datetime.getHours() : datetime.getHours();
+        var minute = datetime.getMinutes()< 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+        var second = datetime.getSeconds()< 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+        return year + "年" + month + "月" + date+"日 <br> "+hour+":"+minute+":"+second;
+    }
+
+</script>
+
+
+<script>
+    layui.use(['element', 'layer'], function(){
+        var element = layui.element;
+        var layer = layui.layer;
+
+        //监听折叠
+        element.on('collapse(introduce)', function(data){
+
+        });
+    });
+</script>
+
+
+</body>
+</html>

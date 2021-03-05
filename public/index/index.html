@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>后台管理系统</title>
+	</head>
+	<link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+	<link rel="stylesheet" type="text/css" href="/static/admin/css/iadmin.css" />
+	<link href="/static/admin/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<body>
+		<!--主框架-->
+		<div class="iadmin">
+			<div class="i-menu">
+				<div class="i-menu-scroll">
+					<!--LOGO区域-->
+					<div class="i-logo-container">
+						<!--正常LOGO内容 图片尺寸为160x40-->
+						<div class="i-max-logo">
+							菜单导航
+						</div>
+						<!--缩小LOGO内容 图片尺寸为40x40-->
+						<div class="i-min-logo" hidden="hidden">
+							<i class="fa fa-meetup"></i>
+						</div>
+					</div>
+					<!--LOGO区域结束-->
+
+
+					<!--左侧菜单-->
+					<div class="i-menu-nav">
+						<ul class="ui-sortable ui-sortable-disabled">
+
+							<li>
+								<a href="javascript:;" data-id="one_1" >
+									<i class="fa fa-wpforms i-icon-left"></i>
+									<span>体检表</span>
+									<i class="fa fa-angle-down i-icon-right"></i>
+								</a>
+								<dl>
+									<dd>
+										<a href="javascript:;" data-url="{:url('financial/index')}" data-id="two1_1">全部数据</a>
+									</dd>
+								</dl>
+							</li>
+
+
+
+							<li>
+								<a href="javascript:;" data-id="one_3" >
+									<i class="fa fa-check-square i-icon-left"></i>
+									<span>选项管理</span>
+									<i class="fa fa-angle-down i-icon-right"></i>
+								</a>
+								<dl>
+									<dd>
+										<a href="javascript:;" data-url="{:url('common/edu')}" data-id="two3_1">学历</a>
+									</dd>
+
+									<dd>
+										<a href="javascript:;" data-url="{:url('common/emotion')}" data-id="two3_3">情感状态</a>
+									</dd>
+
+									<dd>
+										<a href="javascript:;" data-url="{:url('common/invest_product')}" data-id="two3_7">投资类产品总额</a>
+									</dd>
+
+								</dl>
+							</li>
+
+
+							<li>
+								<a href="javascript:;" data-id="one_5" >
+									<i class="fa fa-user i-icon-left"></i>
+									<span>用户管理</span>
+									<i class="fa fa-angle-down i-icon-right"></i>
+								</a>
+								<dl>
+									<dd>
+										<a href="javascript:;" data-url="{:url('wechat/user')}" data-id="two5_1">微信用户</a>
+									</dd>
+
+								</dl>
+							</li>
+
+
+
+							<li>
+								<a href="javascript:;" data-id="one_5" >
+									<i class="fa fa-codepen i-icon-left"></i>
+									<span>体验码管理</span>
+									<i class="fa fa-angle-down i-icon-right"></i>
+								</a>
+								<dl>
+									<dd>
+										<a href="javascript:;" data-url="{:url('experience/index')}" data-id="two7_1">体验码列表</a>
+									</dd>
+
+								</dl>
+							</li>
+
+
+							<li>
+								<a href="javascript:;" data-id="one_9" >
+									<i class="fa fa-sun-o i-icon-left"></i>
+									<span>系统管理</span>
+									<i class="fa fa-angle-down i-icon-right"></i>
+								</a>
+								<dl>
+									<dd>
+										<a href="javascript:;" data-url="{:url('common/chicken')}" data-id="two9_1">鸡汤文案</a>
+									</dd>
+									<dd>
+										<a href="javascript:;" data-url="{:url('common/agreement')}" data-id="two9_9">隐私协议</a>
+									</dd>
+
+								</dl>
+							</li>
+
+
+
+
+						</ul>
+					</div>
+					<!--左侧菜单结束-->
+
+
+				</div>
+			</div>
+			<!--右侧区域-->
+			<div class="i-main">
+				<div class="i-mask"></div>
+				<!--顶部菜单-->
+				<div class="i-header">
+					<ul class="layui-nav layui-layout-left">
+						<li class="layui-nav-item">
+							<a href="javascript:;" id="scaling"><i class="layui-icon layui-icon-spread-left"></i></a>
+						</li>
+
+					</ul>
+					<ul class="layui-nav layui-layout-right">
+
+						<li class="layui-nav-item layui-hide-xs">
+							<a href="javascript:;" i-attr="fullScreen" title="全屏"><i class="fa fa-expand"></i></a>
+						</li>
+
+						<li class="layui-nav-item layui-hide-xs">
+							<a href="javascript:;" id="clear" i-attr="message" title="清除缓存">
+								<i class="fa fa-trash-o"></i>
+							</a>
+						</li>
+
+
+
+
+						<li class="layui-nav-item">
+
+							<a href="javascript:;"  i-attr="userName">{$Think.Session.admin.username}</a>
+							<dl class="layui-nav-child">
+
+
+								<dd>
+									<a href="javascript:;" id="modify" >修改密码</a>
+								</dd>
+								<hr />
+								<dd>
+									<a href="javascript:;" id="logout">退出登录</a>
+								</dd>
+							</dl>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:;" i-attr="btnSystemSet"><i class="fa  fa-ellipsis-v"></i></a>
+						</li>
+					</ul>
+				</div>
+				<!--顶部菜单结束-->
+				<div class="i-tab" i-filter="navTab">
+					<!--手机端面包屑导航-->
+					<div class="layui-card-header i-ellipsis">
+						<span class="layui-breadcrumb" lay-filter="test1">
+							<a href="javascript:;">主页</a>
+						</span>
+					</div>
+					<!--手机端面包屑导航结束-->
+					<!--Tab导航左侧按钮-->
+					<ul class="layui-nav i-left">
+						<li class="layui-nav-item">
+							<a href="javascript:;" i-attr="tabLeft"><i class="layui-icon">&#xe65a;</i></a>
+						</li>
+					</ul>
+					<!--Tab导航左侧按钮结束-->
+					<!--Tab导航-->
+					<div class="i-tab-title" i-attr="navTab">
+						<ul>
+							<li class="layui-this" i-attr="i-home" lay-id="one_-1"><i class="layui-icon layui-icon-home"></i></li>
+						</ul>
+					</div>
+					<!--Tab导航结束-->
+					<!--Tab导航右侧按钮-->
+					<ul class="layui-nav i-right">
+						<li class="layui-nav-item">
+							<a href="javascript:;" i-attr="tabRight"><i class="layui-icon">&#xe65b;</i></a>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:;" i-attr="repeat"><i class="fa fa-repeat"></i></a>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:;"><i class="layui-icon">&#xe61a;</i></a>
+							<dl class="layui-nav-child">
+								<dd>
+									<a href="javascript:;" i-attr="closeThis">关闭当前</a>
+								</dd>
+								<dd>
+									<a href="javascript:;" i-attr="closeOther">关闭其它</a>
+								</dd>
+								<dd>
+									<a href="javascript:;" i-attr="closeAll">关闭全部</a>
+								</dd>
+							</dl>
+						</li>
+					</ul>
+					<!--Tab导航右侧按钮结束-->
+					<!--iframe子页面区域-->
+					<div class="i-tab-content" i-attr='navTabContent'>
+						<div class="i-tab-item layui-show" lay-id="one_-1">
+							<iframe class="i-iframe" src="{:url('index/welcome')}" width="100%" style="height: 800px;"></iframe>
+						</div>
+					</div>
+					<!--iframe子页面区域结束-->
+				</div>
+			</div>
+			<!--系统设置菜单区域-->
+			<div class="layui-card layui-form" i-attr='systemSet'>
+				<div class="layui-card-header">系统设置
+					<i class="layui-icon layui-icon-about i-icon-right" i-attr="about" i-title="以下设置使用本地存储，不涉及数据库持久化存储；您在更换设备后登录，状态将会恢复为初始状态。"></i>
+				</div>
+				<div class="layui-card-body">
+					<div class="layui-form-item">
+						<label class="layui-form-label">左侧菜单临时排序功能</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="systemSet" lay-skin="switch" lay-filter="systemSet" lay-text="ON|OFF" value='1'>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">顶部导航排序功能</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="systemSet" lay-skin="switch" lay-filter="systemSet" lay-text="ON|OFF" checked value='2'>
+						</div>
+					</div>
+					<!--<div class="layui-form-item">
+						<label class="layui-form-label">右下角登录提示功能</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="systemSet" lay-skin="switch" lay-filter="systemSet" lay-text="ON|OFF" checked value='3'>
+						</div>
+					</div>-->
+					<div class="layui-form-item">
+						<label class="layui-form-label">左侧菜单自动刷新</label>
+						<div class="layui-input-block">
+							<input type="checkbox" id="menu_auto" name="systemSet" lay-skin="switch" lay-filter="systemSet" lay-text="ON|OFF"  value='4'>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">顶部导航自动刷新</label>
+						<div class="layui-input-block">
+							<input type="checkbox" id="top_nav_auto" name="systemSet" lay-skin="switch" lay-filter="systemSet" lay-text="ON|OFF"  value='5'>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!--系统设置菜单区域结束-->
+		</div>
+	</body>
+	<script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+	<script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+
+	<script src="/static/admin/lib/jQuery/jquery-ui/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/admin/lib/jQuery/jquery.mousewheel.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/admin/lib/jQuery/store.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/admin/js/iadmin-main.js?v=20200414" type="text/javascript" charset="utf-8"></script>
+
+
+	<script type="text/javascript">
+
+        $(function() {
+
+            //menuInit(); //获取菜单,暂时隐藏
+        });
+
+        //获取菜单，暂时隐藏
+       /* function menuInit() {
+            $.ajax({
+                type: "GET",
+                url: "{:url('index/index')}",
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+
+                    //一级导航ID以one_开头，二级导航IDtwo_开头 (data-id)
+                    for(var x = 0; x < data.menu.length; x++) {
+                        var subment = "",
+                            ifIcon = "";
+
+
+                        //如果当前菜单无下级，直接跳出循环，进入下一次循环
+                        if (data.menu[x].children === undefined){
+                            continue;
+                        }
+
+                        for(var y = 0; y < data.menu[x].children.length; y++) {
+                            ifIcon = '<i class="fa fa-angle-down i-icon-right"></i>'
+                            subment += '<dd>' +
+                                '<a href="javascript:;" data-url = "/admin/' + data.menu[x].children[y].url + '" data-id = "two_' + data.menu[x].children[y].id + '">' + data.menu[x].children[y].title + '</a>' +
+                                '</dd>'
+                        }
+                        var menu = '<li>' +
+                            '<a href="javascript:;" data-id = "one_' + data.menu[x].id + '" data-url ="' + data.menu[x].url + '"  >' +
+                            '<i class="layui-icon ' + data.menu[x].icon + ' i-icon-left"></i>' +
+                            '<span>' + data.menu[x].title + '</span>' + ifIcon +
+                            '</a>' +
+                            '<dl>' + subment + '</dl>' +
+                            '</li>'
+                        $(".i-menu-nav ul").append(menu);
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText)
+                }
+            });
+        }*/
+
+
+        //清除缓存
+        $('#clear').click(function () {
+            layer.confirm('您确定要清除缓存吗?',{
+                icon: 3,
+            }, function(index){
+                $.ajax({
+                    url:"{:url('system/clear')}",
+                    type:"POST",
+                    dataType:"JSON",
+                    success:function (res) {
+                        if(res.code == 0){
+                            layer.msg(res.msg,
+								{icon: 16
+                                ,shade: 0.01});
+                        }
+                    }
+                })
+
+            },function (index) {
+                layer.msg('取消操作', {
+                    time: 2000, //1s后自动关闭
+
+                });
+            });
+        })
+		//退出系统
+		$('#logout').click(function () {
+            layer.confirm('您确定要退出系统吗?',{
+                icon: 3,
+            }, function(index){
+                $.ajax({
+                    url:"{:url('system/logout')}",
+                    type:"POST",
+                    dataType:"JSON",
+                    success:function (res) {
+                        if(res.code == 0){
+                            layer.msg(res.msg,{ icon: 6,time:2000},function () {
+                                location.href="{:url('Manager/login')}";
+                            });
+                        }
+                    }
+                })
+
+            },function (index) {
+                layer.msg('取消操作', {
+                    time: 2000, //1s后自动关闭
+
+                });
+            });
+        })
+		//修改密码
+		$('#modify').click(function () {
+            var indexOpen = layer.open({
+                type: 2,
+                title: '修改密码',
+                closeBtn: 1, //是否显示关闭按钮
+                area: ['600px','400px'],
+                anim: 2,  //动画
+                shadeClose: false,  //点击空白处是否关闭
+                maxmin: false, //开启最大化最小化按钮
+                content: ["{:url('system/modify')}"]
+            });
+        })
+
+	</script>
+</html>

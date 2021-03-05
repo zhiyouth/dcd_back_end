@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>体验码列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="__admin__/css/style.css"  media="all">
+</head>
+<body>
+
+<script type="text/html" id="topBtn">
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-radius layui-btn-sm" id="add" lay-event="add"><i class="layui-icon">&#xe608;</i>添加</button>
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-radius layui-btn-sm" id="delete" lay-event="delete" ><i class="layui-icon">&#xe640;</i>删除</button>
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-radius layui-btn-sm" id="alterAll" lay-event="create_batch" ><i class="layui-icon">&#xe60e;</i>批量生成</button>
+
+</script>
+
+<table class="layui-hide" id="experience" lay-filter="experience"></table>
+
+<script type="text/html" id="barAction">
+  <!--  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<!-- 状态 -->
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status === 0){ }}
+    <span style='color: gray'>未激活</span>
+    {{#  } else if(d.status === 1){ }}
+    <span style='color: green'>已激活</span>
+    {{#  } else if(d.status === 2){ }}
+    <span style='color: red'>已使用</span>
+    {{#  } }}
+
+</script>
+
+
+<script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+<script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+
+
+<script>
+    layui.use(["table", "util","form"], function(){
+        var table = layui.table
+            ,util = layui.util
+            ,form = layui.form
+            ,layer = layui.layer;
+
+
+        var tableIn = table.render({
+            elem: '#experience'
+            ,url:"{:url('experience/index')}"
+            ,title: '体验码列表'
+            ,cellMinWidth: 80
+            ,toolbar: '#topBtn'
+            ,cols: [[
+                {type: 'checkbox'}
+                ,{field:'id', title:'ID', unresize: true, }
+                ,{field:'code', title:'CODE'}
+                ,{field:'status', title:'状态',width:160,align:'center',templet:'#statusTpl'}
+                ,{field:'activate_time', title:'激活时间',hide:true,templet:function (res) {
+                        return res.activate_time ? util.toDateString(res.activate_time = (res.activate_time * 1000)): '暂无';
+                    }}
+                ,{field:'submit_time', title:'提交时间',hide:true,templet:function (res) {
+                        return res.submit_time ? util.toDateString(res.submit_time = (res.submit_time * 1000)): '暂无';
+                    }}
+                ,{field:'nickName', title:'关联用户',hide:true}
+                ,{field:'add_time', title:'创建时间',hide:false, align:'center',templet:function (res) {
+                        return util.toDateString(res.add_time = (res.add_time * 1000));
+                    }}
+                ,{field:'update_time', title:'更新时间',hide:true,templet:function (res) {
+                        return res.update_time ? util.toDateString(res.update_time = (res.update_time * 1000)): '暂无';
+                    }}
+                ,{title:'操作',align:'center',  toolbar: '#barAction'}
+            ]]
+            ,page: true
+            ,done:function (res,page,count) {
+
+            }
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(experience)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            switch(obj.event){
+                case 'add':
+                    var indexOpen = layer.open({
+                        type: 2,
+                        title: '添加体验码',
+                        closeBtn: 1, //是否显示关闭按钮
+                        area: ['600px','300px'],
+                        anim: 2,  //动画
+                        shadeClose: false,  //点击空白处是否关闭
+                        maxmin: false, //开启最大化最小化按钮
+                        content: ["{:url('experience/add')}"]
+                    });
+                    break;
+                case 'update':
+                    layer.msg('不可编辑！');
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请至少选择一行');
+                    }else {
+                        delList = [];
+                        data.forEach(function (obj,index) {
+                            delList.push(obj.id);
+                        });
+
+                        layer.confirm('您确定要删除这'+data.length+'个选项吗？',function () {
+                            var loading = layer.load(1, {shade: [0.1, '#fff']});
+                            $.ajax({
+                                url: "{:url('experience/del')}",
+                                type:'post',
+                                dataType:'json',
+                                data:{
+                                    id:delList,
+                                },
+                                success:function (res) {
+                                    layer.close(loading);
+                                    if(res.code== 0){
+                                        layer.msg(res.msg,{time:1000},function () {
+                                            table.reload('experience',{});
+                                        });
+                                    }else{
+                                        layer.msg(res.msg);
+                                    }
+                                }
+
+                            });
+                        },function () {
+                            layer.msg('您取消了删除操作！')
+                        })
+                    };
+                    break;
+                case 'create_batch':
+                    //默认prompt
+                    layer.prompt(function(val, index,elem){
+                        //方式一、使用取余运算符判断
+                        //任何整数都会被1整除，即余数是0。利用这个规则来判断是否是整数。
+
+                        if(typeof(parseInt(val)) === 'number' && val % 1 === 0){
+                            $.ajax({
+                                url: "{:url('experience/create_batch')}",
+                                type:'post',
+                                dataType:'json',
+                                data:{
+                                    num:val,
+                                },
+                                success:function (res) {
+                                    layer.msg(res.msg,function () {
+                                        layer.close(index);
+                                        table.reload('experience',{});
+                                    });
+
+                                }
+
+                            });
+                        }else {
+                            layer.msg('请输入整数哦!');
+                        }
+
+                    });
+                    break;
+            };
+
+        });
+
+
+        //监听行工具事件
+        table.on('tool(experience)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'del'){
+                layer.confirm('您确定要删除吗？', function(index){
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('experience/del')}",{id:data.id},function(res){
+                        layer.close(loading);
+                        if(res.code===0){
+                            layer.msg(res.msg,{time:1000},function () {
+                                tableIn.reload();
+                            });
+
+                        }else{
+                            layer.msg(res.msg);
+                        }
+                    });
+                    layer.close(index);
+                },function () {
+                    layer.msg('您取消了删除操作！')
+                });
+            }
+            else if(layEvent === 'edit'){
+                layer.msg('不可编辑！');
+            }
+        });
+
+
+
+    });
+
+</script>
+
+</body>
+</html>

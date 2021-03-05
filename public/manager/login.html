@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎登录后台管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <style>
+
+        .login {
+            margin: 250px auto 0 auto!important;
+            min-height: 420px;
+            max-width: 420px;
+            padding: 40px;
+            background-color: #ffffff;
+            margin-left: auto;
+            margin-right: 18% !important;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        .login {
+            margin: 200px auto 0 auto;
+            min-height: 420px;
+            max-width: 420px;
+            padding: 40px;
+            background-color: #ffffff;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .login #darkbannerwrap {
+            background: url(/static/admin/images/aiwrap.png);
+            width: 18px;
+            height: 10px;
+            margin: 0 0 20px -58px;
+            position: relative;
+        }
+
+        .login .message {
+            margin: 10px 0 0 -58px;
+            padding: 18px 10px 18px 60px;
+            background: #189F92;
+            position: relative;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .login-bg {
+            background: url(/static/admin/images/bg.png) no-repeat center;
+            background-size: cover;
+            overflow: hidden;
+        }
+        .login hr.hr15 {
+            height: 15px;
+            border: none;
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+        }
+        .login hr.hr20 {
+            height: 20px;
+            border: none;
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+        }
+
+        .login hr {
+            background: rgb(255, 255, 255);
+        }
+        .login input[type=text], .login input[type=file], .login input[type=password], .login input[type=email], select {
+            border: 1px solid #DCDEE0;
+            vertical-align: middle;
+            border-radius: 3px;
+            height: 50px;
+            padding: 0px 16px;
+            font-size: 14px;
+            color: #555555;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .layui-btn-lg {
+            height: 48px;
+            line-height: 48px;
+            padding: 0 25px;
+            font-size: 16px;
+        }
+
+    </style>
+
+
+    <style>
+        html,body{
+            height: 100%;width: 100%;overflow: hidden;
+        }
+    </style>
+
+</head>
+<body class="login-bg">
+
+<div class="login layui-anim layui-anim-up">
+    <div class="message" style="background-color: #0D2CA5">小程序 - 后台管理系统</div>
+    <div id="darkbannerwrap"></div>
+
+    <div  class="layui-form" >
+        <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" autocomplete="off">
+        <hr class="hr15">
+        <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
+        <hr class="hr15">
+        <input class="layui-btn layui-btn-lg"  value="登录" id="login_submit" lay-submit lay-filter="login_submit" style="width:100%;background-color: #0D2CA5;color: white;" type="submit">
+        <hr class="hr20" >
+    </div>
+</div>
+<script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+<script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+
+
+<script>
+    //支持Enter键登录
+    document.onkeydown = function(e){
+        if($(".bac").length==0)
+        {
+            if(!e) e = window.event;
+            if((e.keyCode || e.which) == 13){
+                var obtnLogin=document.getElementById("login_submit")
+                obtnLogin.focus();
+            }
+        }
+    }
+
+    layui.use(['form','layer'], function() {
+        var form = layui.form,layer = layui.layer;
+
+
+        //自定义验证规则
+        form.verify({
+
+        });
+
+        //监听提交
+        form.on('submit(login_submit)', function (data) {
+
+            $.ajax({
+                type: "post",
+                url:"{:url('Manager/login')}",
+                data: {
+                    username: data.field.username,
+                    password: data.field.password,
+                },
+                success: function (data) {
+                    if (data.code == 0) {
+                        layer.msg(data.msg,{
+                            icon: 6,
+                            offset: '120px',
+                            anim: 1,
+                        },function () {
+                            parent.location.href="{:url('index/index')}";
+                        });
+                    }else {
+                        layer.msg(data.msg,{
+                            offset: '120px',
+                            anim: 1,
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

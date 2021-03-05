@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>微信用户</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=wechat-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="__admin__/css/style.css"  media="all">
+
+    <style>
+        .headimgurl{
+            width: 46px;
+            height: 46px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<table class="layui-hide" id="wechat" lay-filter="wechat"></table>
+
+<script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+<script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+
+
+<script>
+    layui.use(["table", "util"], function(){
+        var table = layui.table
+            ,util = layui.util
+            ,layer = layui.layer;
+
+
+        var tableIn = table.render({
+            elem: '#wechat'
+            ,url:"{:url('wechat/user')}"
+            ,title: '微信用户'
+            ,cellMinWidth: 80
+            ,toolbar:false
+            ,cols: [[
+                {type: 'checkbox'}
+                ,{field:'id', title:'ID', width:80, unresize: true, }
+                ,{field:'avatarUrl', title:'头像',width:80,align:'center',templet:'<div><img class="headimgurl" src="{{ d.avatarUrl }}"></div>'}
+                ,{field:'nickName', title:'昵称'}
+                ,{field:'openid', title:'OPENID',}
+                ,{field:'gender', title:'性别',align:'center'}
+                ,{field:'country', title:'国家',align:'center'}
+                ,{field:'province', title:'省份',align:'center'}
+                ,{field:'city', title:'城市',align:'center'}
+                ,{field:'login_time', title:'最近登录',templet:function (res) {
+                        return util.toDateString(res.login_time = (res.login_time * 1000));
+                    }}
+                ,{field:'add_time', title:'添加时间',templet:function (res) {
+                        return util.toDateString(res.add_time = (res.add_time * 1000));
+                    }}
+
+            ]]
+            ,page: true
+            ,done:function (res,page,count) {
+
+            }
+        });
+
+
+    });
+
+</script>
+
+</body>
+</html>

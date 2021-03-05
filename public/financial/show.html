@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>查看</title>
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/iadmin.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/admin.css" />
+    <link href="/static/admin/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        html{
+            background: white;
+        }
+
+    </style>
+</head>
+
+<body style="">
+
+
+
+
+<div style="margin: 0 15px 0 15px">
+    <table class="layui-table">
+        <tr>
+            <th colspan="4" style="text-align: center;font-size: 26px;font-weight: bold;height: 60px">体检表信息</th>
+        </tr>
+        <tr>
+            <td rowspan="7">基本信息项</td>
+            <td>姓名</td>
+            <td colspan="2" style="text-align: center;">{$result.basic_name}</td>
+        </tr>
+        <tr>
+            <td>出生日期</td>
+            <td>{$result.basic_birthday|date='Y年m月d日'}</td>
+            <td>年龄：{$result.basic_age}</td>
+        </tr>
+        <tr>
+            <td>学历</td>
+            <td>{$result.basic_edu}</td>
+            <td>选择项</td>
+        </tr>
+        <tr>
+            <td>职业</td>
+            <td colspan="2" style="text-align: center;">{$result.basic_job}</td>
+        </tr>
+        <tr>
+            <td>情感状态</td>
+            <td>{$result.basic_emotion}</td>
+            <td>选择项</td>
+        </tr>
+        <tr>
+            <td>有无子女</td>
+            <td>{$result.basic_children}</td>
+            <td>选择项（1有，0无）</td>
+        </tr>
+        <tr>
+            <td>手机号</td>
+            <td colspan="2">{$result.basic_phone}</td>
+        </tr>
+
+        <tr>
+            <td rowspan="3">资产项</td>
+            <td>月收入</td>
+            <td colspan="2">{$result.asset_month_income}</td>
+        </tr>
+        <tr>
+            <td>现存款</td>
+            <td colspan="2">{$result.asset_now_deposit}</td>
+        </tr>
+        <tr>
+            <td>投资类产品总额</td>
+            <td><!--{$result.asset_invest_product}-->{$result.asset_invest_total}</td>
+            <td>（单位/元）</td>
+        </tr>
+
+        <tr>
+            <td rowspan="7">支出项</td>
+            <td>月家用常规支出</td>
+            <td colspan="2">{$result.disburse_month_general}</td>
+        </tr>
+        <tr>
+            <td>月房租支出</td>
+            <td colspan="2">{$result.disburse_month_house}</td>
+        </tr>
+        <tr>
+            <td>月子女支出</td>
+            <td colspan="2">{$result.disburse_month_children}</td>
+        </tr>
+        <tr>
+            <td>月购物支出</td>
+            <td colspan="2">{$result.disburse_month_shop}</td>
+        </tr>
+        <tr>
+            <td>月娱乐支出</td>
+            <td colspan="2">{$result.disburse_month_play}</td>
+        </tr>
+        <tr>
+            <td>月投资支出</td>
+            <td colspan="2">{$result.disburse_month_invest}</td>
+        </tr>
+        <tr>
+            <td>月其他支出</td>
+            <td colspan="2">{$result.disburse_month_other}</td>
+        </tr>
+
+        <tr>
+            <td rowspan="4">负债项</td>
+            <td>月车贷还款</td>
+            <td colspan="2">{$result.month_car_loans}</td>
+        </tr>
+        <tr>
+            <td>月房贷还款</td>
+            <td colspan="2">{$result.month_house_loans}</td>
+        </tr>
+        <tr>
+            <td>月信用卡还款</td>
+            <td colspan="2">{$result.month_card_loans}</td>
+        </tr>
+        <tr>
+            <td>其他</td>
+            <td colspan="2">{$result.month_other}</td>
+        </tr>
+
+        <tr>
+            <td>期望目标金额</td>
+            <td colspan="2">{$result.target_amount}</td>
+            <td>（单位/万元）</td>
+        </tr>
+
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+<script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+<script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>情感状态</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="__admin__/css/style.css"  media="all">
+</head>
+<body>
+
+<table class="layui-hide" id="emotion" lay-filter="emotion"></table>
+
+<script type="text/html" id="barAction">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+<script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+
+
+<script>
+    layui.use(["table", "util","form"], function(){
+        var table = layui.table
+            ,util = layui.util
+            ,form = layui.form
+            ,layer = layui.layer;
+
+
+        var tableIn = table.render({
+            elem: '#emotion'
+            ,url:"{:url('common/emotion')}"
+            ,title: '情感状态'
+            ,cellMinWidth: 80
+            ,toolbar:'default'
+            ,cols: [[
+                {type: 'checkbox'}
+                ,{field:'id', title:'ID', unresize: true, }
+                ,{field:'title', title:'名称'}
+                ,{field:'add_time', title:'创建时间',hide:false, align:'center',templet:function (res) {
+                        return util.toDateString(res.add_time = (res.add_time * 1000));
+                    }}
+                ,{field:'update_time', title:'更新时间',hide:true,templet:function (res) {
+                        return res.update_time ? util.toDateString(res.update_time = (res.update_time * 1000)): '暂无';
+                    }}
+                ,{title:'操作',align:'center',  toolbar: '#barAction'}
+            ]]
+            ,page: true
+            ,done:function (res,page,count) {
+                
+            }
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(emotion)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            switch(obj.event){
+                case 'add':
+                    var indexOpen = layer.open({
+                        type: 2,
+                        title: '添加情感状态',
+                        closeBtn: 1, //是否显示关闭按钮
+                        area: ['560px','280px'],
+                        anim: 2,  //动画
+                        shadeClose: false,  //点击空白处是否关闭
+                        maxmin: false, //开启最大化最小化按钮
+                        content: ["{:url('common/emotion_add')}"]
+                    });
+                    break;
+                case 'update':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else if(data.length > 1){
+                        layer.msg('只能同时编辑一个');
+                    } else {
+                        var indexOpen = layer.open({
+                            type: 2,
+                            title: '编辑情感状态',
+                            closeBtn: 1, //是否显示关闭按钮
+                            area: ['560px','280px'],
+                            anim: 2,  //动画
+                            shadeClose: false,  //点击空白处是否关闭
+                            maxmin: false, //开启最大化最小化按钮
+                            content: ["{:url('common/emotion_edit')}?id="+checkStatus.data[0].id]
+                        });
+                    }
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请至少选择一行');
+                    }else {
+                        delList = [];
+                        data.forEach(function (obj,index) {
+                            delList.push(obj.id);
+                        });
+
+                        layer.confirm('您确定要删除这'+data.length+'个选项吗？',function () {
+                            var loading = layer.load(1, {shade: [0.1, '#fff']});
+                            $.ajax({
+                                url: "{:url('common/emotion_del')}",
+                                type:'post',
+                                dataType:'json',
+                                data:{
+                                    id:delList,
+                                },
+                                success:function (res) {
+                                    layer.close(loading);
+                                    if(res.code== 0){
+                                        layer.msg(res.msg,{time:1000},function () {
+                                            table.reload('emotion',{});
+                                        });
+                                    }else{
+                                        layer.msg(res.msg);
+                                    }
+                                }
+
+                            });
+                        },function () {
+                            layer.msg('您取消了删除操作！')
+                        })
+                    };
+                    break;
+            };
+
+        });
+
+
+        //监听行工具事件
+        table.on('tool(emotion)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'del'){
+                layer.confirm('您确定要删除吗？', function(index){
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('common/emotion_del')}",{id:data.id},function(res){
+                        layer.close(loading);
+                        if(res.code===0){
+                            layer.msg(res.msg,{time:1000},function () {
+                                tableIn.reload();
+                            });
+
+                        }else{
+                            layer.msg(res.msg);
+                        }
+                    });
+                    layer.close(index);
+                },function () {
+                    layer.msg('您取消了删除操作！')
+                });
+            }
+            else if(layEvent === 'edit'){
+                var indexOpen = layer.open({
+                    type: 2,
+                    title: '编辑情感状态',
+                    closeBtn: 1, //是否显示关闭按钮
+                    area: ['560px','280px'],
+                    anim: 2,  //动画
+                    shadeClose: false,  //点击空白处是否关闭
+                    maxmin: false, //开启最大化最小化按钮
+                    content: ["{:url('common/emotion_edit')}?id="+data.id]
+                });
+            }
+        });
+
+
+
+    });
+
+</script>
+
+</body>
+</html>

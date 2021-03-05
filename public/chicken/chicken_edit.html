@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑评估愿您，鸡汤文案</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="__admin__/css/style.css"  media="all">
+    <style>
+        .layui-form-select dl {
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <form class="layui-form">
+
+        <input type="hidden" id="id" name="id" value="{$result.id}">
+
+        <div class="layui-form " style="margin-top: 5px;margin-bottom: 20px">
+            <label class="layui-form-label">鸡汤文案</label>
+            <div class="layui-input-block">
+                <textarea name="content" lay-verify="required" placeholder="评估愿您，鸡汤文案" class="layui-textarea">{$result.content}</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="submit">提交保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+    </form>
+
+    <script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+    <script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(["form","laydate"], function(){
+        var form = layui.form,laydate = layui.laydate;
+
+        //监听提交
+        form.on('submit(submit)', function(data){
+
+
+            $.post({
+                url:"{:url('common/chicken_edit')}",
+                type:'POST',
+                data:{
+                    data:data.field
+                },
+                success:function (res) {
+                    if (res.code == 0){
+                        layer.msg(res.msg,{time:2000},function () {
+                            layer.close(layer.index);
+                            window.parent.location.reload();
+                        });
+
+                    }else {
+                        layer.msg(res.msg,{time:2000});
+                    }
+                }
+            })
+
+            return false;
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

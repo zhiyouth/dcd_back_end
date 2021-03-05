@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加体验码</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="__admin__/css/style.css"  media="all">
+    <style>
+        .layui-form-select dl {
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <form class="layui-form">
+
+
+        <div class="layui-form-item" style="margin-top: 15px;margin-bottom: 20px;">
+            <label class="layui-form-label">财务体验码</label>
+            <div class="layui-input-inline">
+                <input type="text" id="code" maxlength="32" style="width: 310px;" name="code" placeholder="请点击随机生成" lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+            <button id="btn_rand_create" style="margin-left: 120px;" type="button" class="layui-btn layui-btn-primary">随机生成</button>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="submit">提交保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+    </form>
+
+    <script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+    <script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(["form","laydate"], function(){
+        var laydate = layui.laydate,form = layui.form;
+
+        //监听提交
+        form.on('submit(submit)', function(data){
+
+
+            $.post({
+                url:"{:url('experience/add')}",
+                type:'POST',
+                data:{
+                    data:data.field
+                },
+                success:function (res) {
+                    if (res.code == 0){
+                        layer.msg(res.msg,{time:2000},function () {
+                            layer.close(layer.index);
+                            window.parent.location.reload();
+                        });
+
+                    }else {
+                        layer.msg(res.msg,{time:2000});
+                    }
+                }
+            })
+
+            return false;
+        });
+
+
+    });
+</script>
+
+
+
+<script>
+
+
+
+
+    function getRandomCode(length) {
+        if (length > 0) {
+            var data = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+            var nums = "";
+            for (var i = 0; i < length; i++) {
+                var r = Math.ceil(Math.random() * 61);
+                nums += data[r];
+            }
+            return nums;
+        } else {
+            return false;
+        }
+    }
+
+
+    $('#btn_rand_create').on('click',function () {
+        var res = getRandomCode(32);
+        console.log(res);
+        $('#code').val(res);
+    });
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

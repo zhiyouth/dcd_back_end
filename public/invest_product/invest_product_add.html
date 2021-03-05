@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加投资类产品总额</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__admin__/lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="__admin__/css/style.css"  media="all">
+    <style>
+        .layui-form-select dl {
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <form class="layui-form">
+
+
+        <div class="layui-form " style="margin-top: 5px;margin-bottom: 20px">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="title" name="title" lay-verify="required" autocomplete="off" placeholder="请输入投资类产品总额名称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="submit">提交保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+    </form>
+
+    <script src="__admin__/lib/jQuery/jquery-3.2.0.min.js" charset="utf-8"></script>
+    <script src="__admin__/lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(["form","laydate"], function(){
+        var laydate = layui.laydate,form = layui.form;
+
+        //监听提交
+        form.on('submit(submit)', function(data){
+
+
+            $.post({
+                url:"{:url('common/invest_product_add')}",
+                type:'POST',
+                data:{
+                    data:data.field
+                },
+                success:function (res) {
+                    if (res.code == 0){
+                        layer.msg(res.msg,{time:2000},function () {
+                            layer.close(layer.index);
+                            window.parent.location.reload();
+                        });
+
+                    }else {
+                        layer.msg(res.msg,{time:2000});
+                    }
+                }
+            })
+
+            return false;
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
